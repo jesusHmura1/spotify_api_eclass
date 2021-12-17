@@ -8,7 +8,6 @@ async function refreshAccesstoken(token) {
     spotifyApi.setRefreshToken(token.refreshToken);
 
     const { body: refreshToken } = await spotifyApi.refreshAccessToken();
-    console.log("refreshTOken:", refreshToken);
 
     return {
       ...token,
@@ -41,7 +40,6 @@ export default NextAuth({
   },
   callbacks: {
     async jwt({ token, account, user }) {
-
       if (account && user) {
         return {
           ...token,

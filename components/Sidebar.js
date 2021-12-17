@@ -10,7 +10,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import useSpotify from "../hooks/useSpotify";
 import { useSelector, useDispatch } from "react-redux";
-import { setplaylists } from "../store/Slice/playlists/playlistsSlice";
+import { setplaylists, setplayid } from "../store/Slice/playlists/playlistsSlice";
 
 function Sidebar() {
   const spotifyApi = useSpotify();
@@ -24,20 +24,14 @@ function Sidebar() {
       spotifyApi.getUserPlaylists().then((data) => {
         const { body } = data;
         const { items } = body;
-        console.log(items);
         dispatch(setplaylists(items));
-        setPlaylist(list);
+        setPlaylist(items);
       });
     }
-  }, [session, spotifyApi, setplaylists]);
-  console.log(playlist);
+  }, [session, spotifyApi, setPlaylist]);
   return (
-    <div className="text-gray-500 p-5 text-sm border-r border-gray-900 overflow-y-scroll scrollbar-hide h-screen">
+    <div className="text-gray-500 p-5 text-xs lg:text-sm border-r border-gray-900 overflow-y-scroll scrollbar-hide h-screen">
       <div className="space-y-4">
-        <button className="flex items-center space-x-2 hover:text-white">
-          <HomeIcon className="h-5 w-5" onClick={() => signOut()} />{" "}
-          <p>log out</p>
-        </button>
         <button className="flex items-center space-x-2 hover:text-white">
           <HomeIcon className="h-5 w-5" /> <p>Home</p>
         </button>
@@ -64,7 +58,7 @@ function Sidebar() {
         </button>
         <hr className="border-t-[0.1px] border-gray-900"></hr>
         {playlist.map((list) => (
-          <p key={list.id} className="cursor-pointer hover:text-white">
+          <p key={list.id} onClick={()=>{dispatch(setplayid(list.id))}} className="cursor-pointer hover:text-white">
             {list.name}
           </p>
         ))}

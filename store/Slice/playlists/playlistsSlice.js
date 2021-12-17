@@ -4,8 +4,8 @@ export const playlistReducer = createSlice({
   name: "playlists",
   initialState: {
     list: [],
-    id: "",
-    playlistdata: {},
+    id: "37i9dQZF1DWThxX36B17XL",
+    data: {},
   },
   reducers: {
     setplaylists: (state, action) => {
@@ -14,11 +14,11 @@ export const playlistReducer = createSlice({
     setplayid: (state, action) => {
       state.id = action.payload;
     },
-    setplaylistdata: (state, action) => {
-      state.playlistdata = action.payload;
+    setdata: (state, action) => {
+      state.data = action.payload;
     },
   },
 });
 
-export const { setplaylists, setplayid, setplaylistdata } = playlistReducer.actions;
+export const { setplaylists, setplayid, setdata } = playlistReducer.actions;
 export default playlistReducer.reducer;

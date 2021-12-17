@@ -6,11 +6,11 @@ import store from "../store";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
-    <Provider store={store}>
-      <SessionProvider session={session}>
+    <SessionProvider session={session}>
+      <Provider store={store}>
         <Component {...pageProps} />
-      </SessionProvider>
-    </Provider>
+      </Provider>
+    </SessionProvider>
   );
 }
 
