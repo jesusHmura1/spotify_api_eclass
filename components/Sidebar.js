@@ -9,18 +9,28 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import useSpotify from "../hooks/useSpotify";
+import { useSelector, useDispatch } from "react-redux";
+import { setplaylists } from "../store/Slice/playlists/playlistsSlice";
+
 function Sidebar() {
   const spotifyApi = useSpotify();
-  const { data: session, status } = useSession();
-  const [playlist, setPlaylist] = useState([]);
+  const dispatch = useDispatch();
+  const { list } = useSelector((state) => state.playlist);
+  const { data: session } = useSession();
+  const [playlist, setPlaylist] = useState(list);
 
   useEffect(() => {
     if (spotifyApi.getAccessToken()) {
       spotifyApi.getUserPlaylists().then((data) => {
-        setPlaylist(data.body.items);
+        const { body } = data;
+        const { items } = body;
+        console.log(items);
+        dispatch(setplaylists(items));
+        setPlaylist(list);
       });
     }
-  }, [session, spotifyApi]);
+  }, [session, spotifyApi, setplaylists]);
+  console.log(playlist);
   return (
     <div className="text-gray-500 p-5 text-sm border-r border-gray-900 overflow-y-scroll scrollbar-hide h-screen">
       <div className="space-y-4">
@@ -54,7 +64,9 @@ function Sidebar() {
         </button>
         <hr className="border-t-[0.1px] border-gray-900"></hr>
         {playlist.map((list) => (
-          <p key={list.id} className="cursor-pointer hover:text-white">{list.name}</p>
+          <p key={list.id} className="cursor-pointer hover:text-white">
+            {list.name}
+          </p>
         ))}
       </div>
     </div>
