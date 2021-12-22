@@ -1,26 +1,21 @@
 import useSpotify from "../hooks/useSpotify";
 import { millisToMinutesAndSeconds } from "../lib/time";
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { settruckid, setstatus } from "../store/Slice/tracks/tracksSlice";
 
 function Song({ order, track }) {
   const spotifyApi = useSpotify();
   const dispatch = useDispatch();
-  const { id, play } = useSelector((state) => state.truck);
-  const [currentTrackId, setCurrentTruckId] = useState(id);
-  const [currentStatusSong, setCurrentStatusSong] = useState(play);
 
   const playSong = () => {
     if (track) {
+      console.log({ id_track: track.track.id });
       dispatch(settruckid(track.track.id));
       dispatch(setstatus(true));
-      setCurrentTruckId(track.track.id);
-      setCurrentStatusSong(true);
 
       spotifyApi.play({
-          uris: [track.track.uri],
-      })
+        uris: [track.track.uri],
+      });
     }
   };
 
